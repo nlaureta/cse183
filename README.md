@@ -1,5 +1,5 @@
 # cse183 - Web Applications
-my assignments from cse183 
+my assignments from cse183 which uses Python, Vue.js, HTML, and Py4web
 
 ### Installation
 
