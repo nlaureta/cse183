@@ -1,0 +1,330 @@
+timestamp: 2023-04-14T23:24:47.516882
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "username" CHAR(512) UNIQUE,
+    "email" CHAR(512) UNIQUE,
+    "password" CHAR(512),
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "sso_id" CHAR(512),
+    "action_token" CHAR(512),
+    "last_password_change" TIMESTAMP,
+    "past_passwords_hash" TEXT
+);
+success!
+timestamp: 2023-04-14T23:24:47.520389
+CREATE TABLE "auth_user_tag_groups"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "tagpath" CHAR(512),
+    "record_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2023-04-16T00:25:23.944711
+CREATE TABLE "birds"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "bird_name" CHAR(512),
+    "weight" INTEGER,
+    "diet" CHAR(512),
+    "habitat" CHAR(512)
+);
+success!
+timestamp: 2023-04-16T20:42:09.961800
+ALTER TABLE "birds" ADD "bird" CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2023-04-22T00:34:04.089871
+ALTER TABLE "birds" ADD "n_sightings" INTEGER;
+timestamp: 2023-04-22T00:34:04.101769
+ALTER TABLE "birds" ADD "user_email" CHAR(512);
+success!
+success!
+timestamp: 2023-04-22T00:35:48.150404
+ALTER TABLE "birds" ADD "created_on" TIMESTAMP;
+timestamp: 2023-04-22T00:35:48.153407
+ALTER TABLE "birds" ADD "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+timestamp: 2023-04-22T00:35:48.155407
+ALTER TABLE "birds" ADD "modified_on" TIMESTAMP;
+timestamp: 2023-04-22T00:35:48.157407
+ALTER TABLE "birds" ADD "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+timestamp: 2023-04-22T00:35:48.159449
+ALTER TABLE "birds" ADD "is_active" CHAR(1);
+success!
+success!
+timestamp: 2023-04-22T01:08:40.574483
+CREATE TABLE "bird"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "bird" CHAR(512),
+    "weight" INTEGER,
+    "diet" CHAR(512),
+    "habitat" CHAR(512),
+    "n_sightings" INTEGER,
+    "user_email" CHAR(512),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "is_active" CHAR(1)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!

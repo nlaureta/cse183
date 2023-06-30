@@ -1,0 +1,27 @@
+[[extend 'layout.html']]
+
+<div class="section">
+   <!-- Put the table here -->
+   <div class="container">
+      <h1 class="title">Birds</h1>
+      <table class="table is-striped is-fullwidth">
+         <tr>
+            <th>Bird Species</th>
+            <th>Weight</th>
+            <th>Diet</th>
+            <th>Habitat</th>
+         </tr>
+         [[for bird in data:]]
+         <tr>
+            <!-- Bird info -->
+            <td>[[=bird["bird"]]]</td>
+            <td>[[=bird["weight"]]]</td>
+            <td>[[=bird["diet"]]]</td>
+            <td>[[=bird["habitat"]]]</td>
+         </tr>
+         [[pass]]
+      </table>
+      <!-- [[=data]] -->
+   </div>
+ 
+</div>

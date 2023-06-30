@@ -1,0 +1,169 @@
+function clone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+// This will be the object that will contain the Vue attributes
+// and be used to initialize it.
+let app = {};
+
+// Given an empty app object, initializes it filling its attributes,
+// creates a Vue instance, and then initializes the Vue instance.
+//let meow_get_users_url = "http://127.0.0.1:8000/meow/get_users";
+let init = (app) => {
+
+    // This is the Vue data.
+    app.data = {
+        // Complete as you see fit.
+        rows: [],
+        get_users_url: "http://127.0.0.1:8000/meow/get_users",
+        text: "",
+        status: "unfollow",
+        setFollowUrl: "http://127.0.0.1:8000/meow/set_follow",
+        posts: [], // Store posts of other users
+        get_post_url: "http://127.0.0.1:8000/meow/get_posts",
+        addPostUrl: "http://127.0.0.1:8000/meow/add_post",
+        bodyText: "",
+    };
+
+    app.enumerate = (a) => {
+        // This adds an _idx field to each element of the array.
+        let k = 0;
+        a.map((e) => { e._idx = k++; });
+        return a;
+    };
+
+    // This contains all the methods.
+    app.methods = {
+        // Complete as you see fit.
+        reloadUsers() {
+            //this.text = ""; //Clear the text when x clicked
+            window.location.reload(); //reloads users
+        },
+
+        setFollow(username, status) {
+            axios.post(app.data.setFollowUrl, { username, status })
+                .then(function (response) {
+                    if (response.data === "ok") {
+                        const user = app.vue.rows.find((row) => row.username === username);
+                        if (user) {
+                            user.status = status;
+                            window.location.reload(); //reloads users
+                        }
+                    }
+
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+
+
+        },
+
+        publishPost() {
+            const content = this.bodyText;
+            if (content) {
+                // Make a POST request to the server to add the post
+                axios.post(app.data.addPostUrl, { content })
+                    .then((response) => {
+                        const newPost = response.data;
+                        newPost.timestamp = Sugar.Date(newPost.timestamp + "Z").relative() //change format of time
+                        // Add the new post to the posts array
+                        app.vue.posts.push(newPost);
+                        // Clear the text area
+                        this.bodyText = "";
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        },
+
+
+
+    };
+
+    // This creates the Vue instance.
+    app.vue = new Vue({
+        el: "#vue-target",
+        data: app.data,
+        methods: app.methods
+    });
+
+    // And this initializes it.
+    app.init = () => {
+        axios.get(app.data.get_users_url)
+            .then(function (response) {
+                //console.log(response.data.users);
+                if (response.data.users) {
+                    const users = response.data.users.map((user) => ({
+                        ...user,
+                        status: "unfollow", // default status for each user
+                    }));
+
+                    const followStatus = response.data.follow_status;
+                    //console.log(followStatus)
+                    followStatus.forEach((status) => {
+                        const user = users.find((user) => user.username === status.username);
+                        if (user) {
+                            user.status = status.status;
+                        }
+                    });
+
+                    // sort users based on follow status
+                    users.sort((a, b) => {
+                        if (a.status === "follow" && b.status === "unfollow") {
+                            return -1;
+                        } else if (a.status === "unfollow" && b.status === "follow") {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+
+                    app.vue.rows = app.enumerate(users);
+                }
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+
+        axios.get(app.data.get_post_url)
+            .then(function (response) {
+                const posts = response.data.posts;
+                
+                const followStatus = response.data.follow_status;
+
+                posts.sort((a, b) => {
+                    // sort posts based on follow status
+                    const aStatus = (followStatus.find(status => status.username === a.author) || { status: "unfollow" }).status;
+                    const bStatus = (followStatus.find(status => status.username === b.author) || { status: "unfollow" }).status;
+                    // console.log("a.author:", a.author);
+                    // console.log("b.author:", b.author);
+                    // console.log("followStatus:", followStatus);
+                    if (aStatus === "follow" && bStatus === "unfollow") {
+                        return -1;
+                    } else if (aStatus === "unfollow" && bStatus === "follow") {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                // change format of time
+                posts.forEach(post => {
+                    post.timestamp = Sugar.Date(post.timestamp + "Z").relative();
+                });
+
+                app.vue.posts = app.enumerate(posts)
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    };
+
+    // Call to the initializer.
+    app.init();
+};
+
+// This takes the (empty) app object, and initializes it,
+// putting all the code in it. 
+init(app);

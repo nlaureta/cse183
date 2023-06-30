@@ -1,0 +1,44 @@
+[[extend 'layout.html']]
+
+<div class="section">
+   <!-- Put the table here -->
+
+   <div class="container">
+      <h1 class="title">Your Bird Sightings</h1>
+      <a class="button is-link" href="[[=URL('add')]]">
+         <span class="icon"> <i class="fa fa-plus"></i></span>
+         <span>Add</span>
+      </a>
+      <table class="table is-striped is-fullwidth">
+         <tr>
+            <th>Bird Species</th>
+            <th>Weight</th>
+            <th>Diet</th>
+            <th>Habitat</th>
+            <th>n_sightings</th>
+            <th></th>
+         </tr>
+         [[for bird in rows:]]
+         <tr>
+            <td>[[=bird.bird]]</td>
+            <td>[[=bird.weight]]</td>
+            <td>[[=bird.diet]]</td>
+            <td>[[=bird.habitat]]</td>
+            <td>[[=bird.n_sightings]]
+               <a class="button is-success" href="[[=URL('inc', bird.id)]]">
+                  <span class="icon"><i class="fa fa-plus"></i> </span>
+                  <span class="has-text-weight-semibold">1</span>
+               </a>
+            </td>
+            <td>
+               <a class="button is-warning" href="[[=URL('edit', bird.id)]]">
+                  <span class="icon"><i class="fa fa-fw fa-pencil"></i> </span>
+                  <span>Edit</span>
+               </a>
+            </td>
+         </tr>
+         [[pass]]
+      </table>
+   </div>
+
+</div>
